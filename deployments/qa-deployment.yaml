@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-app
+  namespace: qa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qa-app
+  template:
+    metadata:
+      labels:
+        app: qa-app
+    spec:
+      containers:
+      - name: qa-app
+        image: hendrikfs/qa-app:latest
+        ports:
+        - containerPort: 80
