@@ -1,11 +1,11 @@
-# Use a lightweight Node.js image as an example
-FROM alpine:latest
+# Use a lightweight nginx image
+FROM nginx:alpine
 
-# Set a working directory
-WORKDIR /app
+# Copy a simple HTML page into nginx default directory
+COPY index.html /usr/share/nginx/html/index.html
 
-# Copy everything from repo into container
-COPY . .
+# Expose port 80
+EXPOSE 80
 
-# Default command
-CMD ["echo", "Hello from dev-app!"]
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
