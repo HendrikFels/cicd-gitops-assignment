@@ -16,6 +16,7 @@ spec:
       containers:
       - name: dev-app
         image: hendrikfs/dev-app:v1.1
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         resources:
