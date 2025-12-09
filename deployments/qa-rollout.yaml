@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: qa-app
-        image: hendrikfs/qa-app:latest
+        image: hendrikfs/qa-app:v2
         ports:
         - containerPort: 80
 
