@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-app-preview
+  namespace: prod
+spec:
+  selector:
+    app: prod-app
+  ports:
+    - port: 80
+      targetPort: 80
