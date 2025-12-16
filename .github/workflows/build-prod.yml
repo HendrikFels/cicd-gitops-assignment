@@ -6,12 +6,13 @@ on:
 
 jobs:
   build:
-    # Skip workflow if the commit was made by GitHub Actions
     if: github.actor != 'github-actions'
     runs-on: ubuntu-latest
-    
+
     steps:
-      
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Set image tag from commit SHA
         run: |
           SHORT_SHA=$(git rev-parse --short HEAD)
