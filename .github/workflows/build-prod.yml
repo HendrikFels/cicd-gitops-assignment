@@ -42,11 +42,13 @@ jobs:
         run: |
           sed -i "s|__IMAGE_TAG__|$IMAGE_TAG|" deployments/prod-rollout.yaml
 
-      # Commit and push rollout update to dev branch
       - name: Commit rollout update
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add deployments/prod-rollout.yaml
           git commit -m "Deploy prod-app $IMAGE_TAG" || echo "No changes to commit"
+          git fetch origin dev
+          git rebase origin/dev || git rebase --abort
           git push origin HEAD:dev
+
