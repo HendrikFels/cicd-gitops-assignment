@@ -6,12 +6,16 @@ on:
 
 jobs:
   build:
+    # Skip workflow if the commit was made by GitHub Actions
+    if: github.actor != 'github-actions'
     runs-on: ubuntu-latest
-
+    
     steps:
       
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Set image tag from commit SHA
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "IMAGE_TAG=v3-$SHORT_SHA" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -20,7 +24,19 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/prod-app:v3 .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/prod-app:$IMAGE_TAG .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/prod-app:v3
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/prod-app:$IMAGE_TAG
+
+      - name: Update rollout image tag
+        run: |
+          sed -i "s|__IMAGE_TAG__|$IMAGE_TAG|" deployments/prod-rollout.yaml
+
+      - name: Commit rollout update
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add deployments/prod-rollout.yaml
+          git commit -m "Deploy prod-app $IMAGE_TAG"
+          git push
