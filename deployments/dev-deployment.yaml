@@ -15,8 +15,12 @@ spec:
     spec:
       containers:
       - name: dev-app
+<<<<<<< HEAD
         image: hendrikfs/dev-app:v1.1
         imagePullPolicy: Always
+=======
+        image: hendrikfs/dev-app:latest
+>>>>>>> 871416ddb463307567f655c29bfa318bf3568fc9
         ports:
         - containerPort: 80
         resources:
