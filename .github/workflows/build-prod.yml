@@ -35,7 +35,11 @@ jobs:
       - name: Update rollout image tag
         run: |
           sed -i "s|__IMAGE_TAG__|$IMAGE_TAG|" deployments/prod-rollout.yaml
-
+        
+      - name: Update rollout image tag
+        run: |
+          sed -i "s|__IMAGE_TAG__|$IMAGE_TAG|" deployments/prod-rollout.yaml
+          
       - name: Commit rollout update
         run: |
           git config user.name "github-actions"
