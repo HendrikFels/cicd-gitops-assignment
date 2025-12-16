@@ -3,16 +3,14 @@ name: Build Dev Image
 on:
   push:
     branches: ["dev"]
-
+#test
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    
       - name: Checkout code
         uses: actions/checkout@v3
-
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -21,14 +19,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-<<<<<<< HEAD
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/dev-app:v1.1 .
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/dev-app:v1.1
-=======
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/dev-app:v1 .
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/dev-app:v1
->>>>>>> 871416ddb463307567f655c29bfa318bf3568fc9
