@@ -15,11 +15,7 @@ spec:
     spec:
       containers:
       - name: prod-app
-<<<<<<< HEAD
         image: hendrikfs/prod-app:v3
-=======
-        image: hendrikfs/prod-app:__IMAGE_TAG__
->>>>>>> 871416ddb463307567f655c29bfa318bf3568fc9
         ports:
         - containerPort: 80
 

@@ -27,29 +27,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-<<<<<<< HEAD
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/prod-app:v3 .
-=======
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/prod-app:$IMAGE_TAG .
->>>>>>> 871416ddb463307567f655c29bfa318bf3568fc9
 
       - name: Push Docker image
-<<<<<<< HEAD
         run: docker push ${{ secrets.DOCKER_USERNAME }}/prod-app:v3
-=======
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/prod-app:$IMAGE_TAG
-
-      - name: Update rollout image tag
-        run: |
-          sed -i "s|__IMAGE_TAG__|$IMAGE_TAG|" deployments/prod-rollout.yaml
-
-      - name: Commit rollout update
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add deployments/prod-rollout.yaml
-          git commit -m "Deploy prod-app $IMAGE_TAG" || echo "No changes to commit"
-          git remote set-url origin https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
-          git push origin HEAD:dev
-  
->>>>>>> 871416ddb463307567f655c29bfa318bf3568fc9
