@@ -45,9 +45,11 @@ jobs:
           git remote set-url origin https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
           git push origin HEAD:main
 
+      - name: Set up kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 -d > kubeconfig
+          echo "KUBECONFIG=$PWD/kubeconfig" >> $GITHUB_ENV
+          kubectl get nodes
       - name: Apply rollout to cluster
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG_DATA }}
         run: |
           kubectl apply -f deployments/prod-rollout.yaml -n prod
-  
