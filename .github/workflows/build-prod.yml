@@ -47,7 +47,7 @@ jobs:
 
       - name: Apply rollout to cluster
         env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          KUBECONFIG: ${{ secrets.KUBECONFIG_DATA }}
         run: |
           kubectl apply -f deployments/prod-rollout.yaml -n prod
   
