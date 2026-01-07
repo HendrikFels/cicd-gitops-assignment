@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: dev-app
-        image: hendrikfs/dev-app:v3-73d0d16
+        image: hendrikfs/dev-app:v3-80896e9
         ports:
         - containerPort: 80
 
