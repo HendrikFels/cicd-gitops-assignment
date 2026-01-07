@@ -34,7 +34,7 @@ jobs:
 
       - name: Update rollout image tag
         run: |
-          sed -i "s|__IMAGE_TAG__|$IMAGE_TAG|" deployments/prod-rollout.yaml
+          sed -i "s|__IMAGE_TAG__|$IMAGE_TAG|" deployments/prod/prod-rollout.yaml
 
       - name: Commit rollout update
         run: |
