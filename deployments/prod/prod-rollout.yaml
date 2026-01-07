@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: prod-app
-        image: hendrikfs/prod-app:v3-c0996eb
+        image: hendrikfs/prod-app:v3-b8aad34
         ports:
         - containerPort: 80
 
