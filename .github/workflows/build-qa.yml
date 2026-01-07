@@ -1,16 +1,24 @@
-name: Build QA Image
+name: Build Qa Image
 
 on:
   push:
-    branches: ["qa"]
+    branches: ["main"]
 
 jobs:
   build:
+    if: github.actor != 'github-actions'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Set image tag from commit SHA
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "IMAGE_TAG=v3-$SHORT_SHA" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -19,7 +27,19 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/qa-app:v2 .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/qa-app:$IMAGE_TAG .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/qa-app:v2
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/qa-app:$IMAGE_TAG
+
+      - name: Update rollout image tag
+        run: |
+          sed -i "s|__IMAGE_TAG__|$IMAGE_TAG|" deployments/qa/qa-rollout.yaml
+      - name: Commit rollout update
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add deployments/qa/qa-rollout.yaml
+          git commit -m "Deploy qa-app $IMAGE_TAG" || echo "No changes to commit"
+          git remote set-url origin https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+          git push origin HEAD:main
